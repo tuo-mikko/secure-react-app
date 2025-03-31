@@ -1,0 +1,5 @@
+POST http://localhost:3001/api/threads/ HTTP/1.1
+content-type: application/json
+
+{"title": "White Lotus season 3 speculations", "starterId": 24, "message": "I am so excited!" }
+

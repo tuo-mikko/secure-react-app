@@ -18,3 +18,11 @@ Basic Git flow for the project when developer starts a new feature:
   `git checkout -b feature/*`
 
 - When feature is done push your code into remote  
+
+   `git push -u origin [name of your local branch]`
+
+  and open a new pull request from GitHub into development branch and ask someone to review it
+
+- When someone has accepted the pull request developer can merge it into development branch
+- When releases are made development branches are merged into main with pull requests
+
