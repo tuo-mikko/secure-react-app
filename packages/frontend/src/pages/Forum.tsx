@@ -1,8 +1,19 @@
 import React from 'react';
+import { Flex, Text } from '@chakra-ui/react'
 
 function Forum() {
-    const greeting = "Forum page";
-    return <h1>{greeting}</h1>
+
+    return (
+        <Flex direction='column' align="center">
+            <Text
+                fontSize="5xl"
+                fontWeight="bold"
+                color="#35544f"
+            >
+                FORUM
+            </Text>
+        </Flex>
+    )
 }
 
 export default Forum;

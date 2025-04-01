@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Box, Flex, Spacer, Text, Button } from '@chakra-ui/react';
+import { Box, Flex, Text, Button } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 
 
@@ -45,6 +45,18 @@ function Header() {
                     color='#FFF1D0'
                 >
                     Profile
+                </Text>
+            </Button>
+            < Button
+                variant="ghost"
+                size="lg"
+                onClick={() => navigate(`/login`)}
+            >
+                <Text 
+                    fontWeight="bold"
+                    color='#FFF1D0'
+                >
+                    Login
                 </Text>
             </Button>
         </Flex>
