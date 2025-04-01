@@ -4,6 +4,11 @@ import './App.css';
 
 //import Login from './pages/Login';
 import Home from './pages/Home';
+import Forum from './pages/Forum';
+import Profile from './pages/Profile';
+import Header from './components/Header';
+
+import { Box } from '@chakra-ui/react'
 
 function App() {
   return (
@@ -21,15 +26,29 @@ function App() {
           //Git repository
         //</a>
       //</header>
-
-      <Routes>
-        <Route
-          path='/home'
-          element={
-            <Home />
-          }  
-        />
-      </Routes>
+      <Box>
+        <Header></Header>
+        <Routes>
+          <Route
+            path='/home'
+            element={
+              <Home />
+            }  
+          />
+          <Route
+            path='/forum'
+            element={
+              <Forum />
+            }  
+          />
+          <Route
+            path='/profile'
+            element={
+              <Profile />
+            }  
+          />
+        </Routes>
+      </Box>
   );
 }
 

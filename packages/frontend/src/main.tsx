@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 
+//pages
 import App from './App';
 import { Provider } from './components/ui/provider';
 
