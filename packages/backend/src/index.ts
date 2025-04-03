@@ -1,61 +1,92 @@
 import express, { Request, Response } from 'express';
+import mongoose, { Schema, Document } from 'mongoose';
 
 const app = express();
 app.use(express.json())
 
-interface Thread {
-  id: number;
-  postDateTime: Date;
+let morgan = require('morgan')
+app.use(morgan('dev'))
+
+
+if (process.argv.length < 3) {
+  console.log('give password as argument')
+  process.exit(1)
+}
+
+const password = process.argv[2]
+
+const url = `mongodb+srv://mikkoAdmin:${password}@whitelotusforum.w5vfwep.mongodb.net/forumPosts?retryWrites=true&w=majority&appName=WhiteLotusForum`
+
+mongoose.set('strictQuery', false)
+
+mongoose.connect(url)
+  .then(() => console.log('Connected to MongoDB'))
+  .catch(err => {
+    console.error('MongoDB connection error:', err);
+    process.exit(1);
+  });
+
+interface PostDocument extends Document {
+    title: string;
+    starterId: number;
+    message: string;
+    postDateTime: Date;
+}
+
+interface PostInput {
   title: string;
   starterId: number;
   message: string;
 }
 
-interface ThreadInput {
-  title: string;
-  starterId: number;
-  message: string;
-}
+const postSchema: Schema<PostDocument> = new Schema({
+  title: { type: String, required: true },
+  starterId: { type: Number, required: true },
+  message: { type: String, required: true },
+  postDateTime: { type: Date, default: Date.now }
+});
 
-// Dummy data
-let threads: Thread[] = [
-  {
-    id: 1,
-    postDateTime: new Date("2024-04-13T08:30:00Z"),
-    title: 'White Lotus season 3 speculations',
-    starterId: 24,
-    message: "I am so excited!"
-  },
-  {
-    id: 2,
-    postDateTime: new Date("2024-04-13T08:30:00Z"),
-    title: 'The second season was not that interesting...',
-    starterId: 22,
-    message: "Maybe it was just me, but I think it was not that great."
-  }
-];
+const PostModel = mongoose.model<PostDocument>('Post', postSchema);
 
 app.get('/', (req: Request, res: Response) => {
   res.send('<h1>Hello World!</h1>');
 });
 
-app.get('/api/threads', (req: Request, res: Response) => {
-  res.json(threads);
+app.get('/api/posts', async (req: Request, res: Response) => {
+  try {
+    const posts = await PostModel.find({});
+    res.json(posts);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch posts' });
+  }
 });
 
-app.get('/api/threads/:id', (req: Request, res: Response) => {
-  const id = Number(req.params.id);
-  const thread = threads.find(thread => thread.id === id)
-  thread ? res.json(thread) : res.status(404).end();
+app.get('/api/posts/:id', async (req: Request, res: Response) => {
+  try {
+    const id = req.params.id
+    const post = await PostModel.findById(id);
+    res.json(post);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch posts' });
+  }
 });
 
-app.delete('/api/threads/:id', (req: Request, res: Response) => {
-  const id = Number(req.params.id)
-  threads = threads.filter(thread => thread.id !== id)
-  res.status(204).end()
+app.delete('/api/posts/:id', async (req: Request, res: Response) => {
+  try {
+    const deletedPost = await PostModel.findByIdAndDelete(req.params.id);
+    if(deletedPost){
+      res.json(deletedPost);
+      res.status(204);
+    } else {
+      res.status(404).json({ error: 'Post not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch posts' });
+  }
 });
 
-app.post('/api/threads/', (req: Request, res: Response) => {
+app.post('/api/posts/', async (req: Request<{}, {}, PostInput>, res: Response) => {
+  
   const body = req.body
 
   if (!body.title) {
@@ -64,28 +95,28 @@ app.post('/api/threads/', (req: Request, res: Response) => {
     })
     return;
   }
-
-  const dateTime = new Date()
-
-  const thread = {
-    id: generateId(),
-    postDateTime: dateTime,
+  
+  const newPost = new PostModel({
     title: body.title,
     starterId: body.starterId,
-    message: body.message
-  }
+    message: body.message,
+    postDateTime: new Date()
+  });
 
-  threads = threads.concat(thread)
-  res.status(200)
-  res.json(thread)
+  
+  try {
+    const savedPost = await newPost.save();
+    res.status(201).json(savedPost);
+  } catch (err) {
+    res.status(400).json({ error: 'Could not save post' });
+  }
 })
 
-function generateId(): number {
-  const maxId = threads.length > 0
-    ? Math.max(...threads.map(n => Number(n.id)))
-    : 0
-  return Number(maxId + 1)
+const unknownEndpoint = (req : Request, res: Response) => {
+  res.status(404).send({ error: 'unknown endpoint' })
 }
+
+app.use(unknownEndpoint)
 
 const PORT = 3001;
 
