@@ -1,1 +1,1 @@
-http://localhost:3001/api/threads/1
+http://localhost:3001/api/posts/67ea9e9d60806fa87644353c
