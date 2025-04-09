@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Button, Flex, Text } from '@chakra-ui/react';
 import axios from 'axios';
+import { 
+    Button, 
+    Flex, 
+    Text, 
+    Heading } from '@chakra-ui/react';
 
 const baseUrl = 'http://localhost:3001/api/posts'
 
@@ -35,7 +39,10 @@ const Forum = () => {
             </Text>
             <Flex>
                 <Button
-                    onClick={() => console.log("new post")}
+                    bg="#37371f"
+                    fontWeight="bold"
+                    //TODO: pop up ikkunan avaaminen forumipostauksen luomiselle
+                    onClick={() => window.open("about:blank", "hello", "width=200,height=200")}
                     >
                     New Post
                 </Button>
@@ -46,6 +53,8 @@ const Forum = () => {
                 borderRadius="md"
                 gap="1"
                 direction = "column"
+                borderWidth="1"
+                borderColor="#37371f"
                 >
                 {posts.map((post) => (
                     <Flex
@@ -53,10 +62,10 @@ const Forum = () => {
                         p="5"
                         borderRadius="md"
                         borderWidth="1"
-                        
+                        direction = "column"
                         >
-                        <h3>{post.title}</h3>
-                        <h4>{post.message}</h4>
+                        <Heading>{post.title}</Heading>
+                        <p>{post.message}</p>
                     </Flex>
                 ))}
             </Flex>
