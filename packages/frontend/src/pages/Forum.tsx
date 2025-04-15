@@ -56,9 +56,10 @@ const Forum = () => {
                 align="center"
                 justify="center"
                 direction="column"
+                maxW="l"
             >
                 <Button
-                    bg="#37371f"
+                    bg="brand.brown"
                     fontWeight="bold"
                     marginX="2"
                     marginY="2"
@@ -73,7 +74,7 @@ const Forum = () => {
                             padding="4"
                             direction="column"
                             borderRadius="md"
-                            borderColor="#37371f"
+                            borderColor="brand.brown"
                             borderWidth="1px"
                         >
                             <p>Start a new thread</p>
@@ -92,10 +93,10 @@ const Forum = () => {
                                 </Textarea>
                             </Field.Root>
                             <Button
-                            bg="#37371f"
-                            fontWeight="bold"
-                            marginX="2"
-                            marginY="2">
+                                bg="#37371f"
+                                fontWeight="bold"
+                                marginX="2"
+                                marginY="2">
                                 Publish
                             </Button>
                         </Box>
