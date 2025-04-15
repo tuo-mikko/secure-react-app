@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Flex, Text } from '@chakra-ui/react'
+import { Flex, Text, Box } from '@chakra-ui/react'
 
 function Home() {
     return (

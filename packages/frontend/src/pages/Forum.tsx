@@ -60,6 +60,7 @@ const Forum = () => {
             >
                 <Button
                     bg="brand.brown"
+                    color="white"
                     fontWeight="bold"
                     marginX="2"
                     marginY="2"

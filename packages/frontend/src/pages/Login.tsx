@@ -67,16 +67,6 @@ const Login = () =>  {
                         </Stack>
                     </form>
                 </Box>
-                <Box
-                    padding="4"
-                    direction="column"
-                    borderRadius="md"
-                    borderColor="brand.brown"
-                    borderWidth="1px"
-                    margin="2"
-                    >
-                    <Text>Create a new account</Text>
-                </Box>
             </Flex>
         </Flex>
     )
