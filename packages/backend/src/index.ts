@@ -62,11 +62,10 @@ app.post('/api/posts/', async (req: Request<{}, {}, PostInput>, res: Response) =
   
   const newPost = new PostModel({
     title: body.title,
-    starterId: body.starterId,
+    userId: body.userId,
     message: body.message,
     postDateTime: new Date()
   });
-
   
   try {
     const savedPost = await newPost.save();
