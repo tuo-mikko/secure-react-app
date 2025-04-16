@@ -1,5 +1,5 @@
 POST http://localhost:3001/api/posts/ HTTP/1.1
 content-type: application/json
 
-{"title": "White lotus is the best! I love it!", "starterId": 502, "message": "This is great!" }
+{"title": "Music of White Lotus: A thread on appreciation", "starterId": 609, "message": "Certified bangers only!" }
 

@@ -1,5 +1,8 @@
+import dotenv from 'dotenv';
+dotenv.config();
 import express, { Request, Response } from 'express';
-import mongoose, { Schema, Document } from 'mongoose';
+import PostModel, { PostInput } from './models/post'; 
+import { connectToMongo } from './config/db';
 
 const app = express();
 app.use(express.json())
@@ -7,46 +10,7 @@ app.use(express.json())
 let morgan = require('morgan')
 app.use(morgan('dev'))
 
-
-if (process.argv.length < 3) {
-  console.log('give password as argument')
-  process.exit(1)
-}
-
-const password = process.argv[2]
-
-const url = `mongodb+srv://mikkoAdmin:${password}@whitelotusforum.w5vfwep.mongodb.net/forumPosts?retryWrites=true&w=majority&appName=WhiteLotusForum`
-
-mongoose.set('strictQuery', false)
-
-mongoose.connect(url)
-  .then(() => console.log('Connected to MongoDB'))
-  .catch(err => {
-    console.error('MongoDB connection error:', err);
-    process.exit(1);
-  });
-
-interface PostDocument extends Document {
-    title: string;
-    starterId: number;
-    message: string;
-    postDateTime: Date;
-}
-
-interface PostInput {
-  title: string;
-  starterId: number;
-  message: string;
-}
-
-const postSchema: Schema<PostDocument> = new Schema({
-  title: { type: String, required: true },
-  starterId: { type: Number, required: true },
-  message: { type: String, required: true },
-  postDateTime: { type: Date, default: Date.now }
-});
-
-const PostModel = mongoose.model<PostDocument>('Post', postSchema);
+connectToMongo();
 
 app.get('/', (req: Request, res: Response) => {
   res.send('<h1>Hello World!</h1>');
@@ -118,7 +82,7 @@ const unknownEndpoint = (req : Request, res: Response) => {
 
 app.use(unknownEndpoint)
 
-const PORT = 3001;
+const PORT = process.env.PORT;
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
