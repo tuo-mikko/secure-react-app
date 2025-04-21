@@ -6,7 +6,7 @@ function App() {
     <div className="App">
       <header className="App-header">
         <p>
-          Welcome to White Lotus forum
+          Welcome to White Lotus forum 
         </p>
         <a
           className="App-link"
