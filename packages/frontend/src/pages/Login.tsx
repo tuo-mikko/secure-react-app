@@ -31,7 +31,7 @@ const Login = () =>  {
             <Text
                 fontSize="5xl"
                 fontWeight="bold"
-                color="brand.brown"
+                color="#35544f"
             >
                 Log in or create an account to White Lotus
             </Text>
@@ -40,7 +40,7 @@ const Login = () =>  {
                     padding="4"
                     direction="column"
                     borderRadius="md"
-                    borderColor="brand.brown"
+                    borderColor="#35544f"
                     borderWidth="1px"
                     margin="2"
                     >
@@ -61,7 +61,7 @@ const Login = () =>  {
 
                         <Button 
                             type="submit"
-                            bg="brand.brown"
+                            bg="#35544f"
                         >
                             Submit</Button>
                         </Stack>
@@ -71,7 +71,7 @@ const Login = () =>  {
                     padding="4"
                     direction="column"
                     borderRadius="md"
-                    borderColor="brand.brown"
+                    borderColor="#35544f"
                     borderWidth="1px"
                     margin="2"
                     >
