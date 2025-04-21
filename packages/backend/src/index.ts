@@ -3,6 +3,8 @@ dotenv.config();
 import express, { Request, Response } from 'express';
 import PostModel, { PostInput } from './models/post'; 
 import { connectToMongo } from './config/db';
+import usersRouter from './controllers/users'
+
 
 const app = express();
 app.use(express.json())
@@ -11,6 +13,8 @@ let morgan = require('morgan')
 app.use(morgan('dev'))
 
 connectToMongo();
+
+app.use('/api/users', usersRouter)
 
 app.get('/', (req: Request, res: Response) => {
   res.send('<h1>Hello World!</h1>');
@@ -78,6 +82,8 @@ app.post('/api/posts/', async (req: Request<{}, {}, PostInput>, res: Response) =
 const unknownEndpoint = (req : Request, res: Response) => {
   res.status(404).send({ error: 'unknown endpoint' })
 }
+
+
 
 app.use(unknownEndpoint)
 
