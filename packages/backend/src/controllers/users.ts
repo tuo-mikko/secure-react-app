@@ -25,5 +25,12 @@ usersRouter.post('/', async (req: Request<{}, {}, CreateUserRequestBody>, res: R
     const savedUser = await user.save();
     res.status(201).json(savedUser);
   });
+
+  usersRouter.get('/', async (request, response) => {
+    const users = await UserModel.find({})
+    response.json(users)
+  })
+
+
   
   export default usersRouter;
