@@ -1,13 +1,15 @@
 import dotenv from 'dotenv';
 dotenv.config();
+import cors from 'cors';
 import express, { Request, Response } from 'express';
 import PostModel, { PostInput } from './models/post'; 
 import { connectToMongo } from './config/db';
 import usersRouter from './controllers/users'
 
-
 const app = express();
 app.use(express.json())
+
+app.use(cors());
 
 let morgan = require('morgan')
 app.use(morgan('dev'))
@@ -82,10 +84,6 @@ app.post('/api/posts/', async (req: Request<{}, {}, PostInput>, res: Response) =
 const unknownEndpoint = (req : Request, res: Response) => {
   res.status(404).send({ error: 'unknown endpoint' })
 }
-
-
-
-app.use(unknownEndpoint)
 
 const PORT = process.env.PORT;
 

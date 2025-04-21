@@ -1,6 +1,8 @@
-import React from 'react'
+import * as React from 'react'
 import { PasswordInput } from "../components/ui/password-input"
 import { useForm } from "react-hook-form"
+import axios from 'axios'
+import loginService from '../services/login'
 import { 
     Field,
     Flex,
@@ -11,19 +13,32 @@ import {
     Text
  } from '@chakra-ui/react'
 
- interface LoginValues {
-    username: string
-    password: string
- }
-
 const Login = () =>  {
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-    } = useForm<LoginValues>()
+    const [username, setUsername] = React.useState('');
+    const [password, setPassword] = React.useState('');
+    const [user, setUser] = React.useState(null);
+    const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
 
-    const onSubmit = handleSubmit((data) => console.log(data))
+    const handleLogin = async (event: React.FormEvent<HTMLElement>) => {
+        event.preventDefault()    
+        console.log('logging in with', username, password)  
+
+        try {
+            const user = await loginService.login({
+                username, password,
+            });
+
+            setUser(user)
+            setUsername('')
+            setPassword('')
+        } catch (exception) {
+            setErrorMessage('wrong credentials')
+            setTimeout(() => {
+                setErrorMessage(null)
+            }, 5000)
+        }
+    }
+
     return (
         <Flex
             direction="column"
@@ -45,18 +60,22 @@ const Login = () =>  {
                     margin="2"
                     >
                     <Text>Login with user account</Text>
-                    <form onSubmit={onSubmit}>
+                    <form onSubmit={handleLogin}>
                         <Stack gap="4" align="flex-start" maxW="sm">
-                            <Field.Root invalid={!!errors.username}>
+                            <Field.Root>
                                 <Field.Label>Username</Field.Label>
-                                <Input {...register("username")} />
-                                <Field.ErrorText>{errors.username?.message}</Field.ErrorText>
+                                <Input 
+                                    type="username"
+                                    value={username}
+                                    onChange={({ target }) => setUsername(target.value)} />
                             </Field.Root>
 
-                        <Field.Root invalid={!!errors.password}>
+                        <Field.Root>
                         <Field.Label>Password</Field.Label>
-                        <PasswordInput {...register("password")} />
-                        <Field.ErrorText>{errors.password?.message}</Field.ErrorText>
+                        <PasswordInput 
+                            type="password"
+                            value={password}
+                            onChange={({ target }) => setPassword(target.value)} />
                         </Field.Root>
 
                         <Button 
