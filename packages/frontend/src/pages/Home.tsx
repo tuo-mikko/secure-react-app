@@ -12,6 +12,7 @@ function Home() {
             >
                 Welcome to White Lotus -resort
             </Text>
+            <Text>moi</Text>
         </Flex>
     )
 }
