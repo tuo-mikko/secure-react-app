@@ -9,56 +9,69 @@ function Header() {
     const navigate = useNavigate();
 
     return (
-        <Flex alignItems='left' height='60px' p='1' bg='#659b5e'>
-            < Button
-                variant="ghost"
-                size="lg"
-                
-                onClick={() => navigate(`/home`)}
-            >
-                <Text 
-                    fontWeight="bold"
-                    color='#FFF1D0'
+        <Flex height='60px' p='1' bg='#659b5e'>
+            <Flex align="left">
+                <Button
+                    variant="ghost"
+                    size="lg"
+                    
+                    onClick={() => navigate(`/home`)}
+                >
+                    <Text 
+                        fontWeight="bold"
+                        color='#FFF1D0'
+                        >
+                        Home
+                    </Text>
+                </Button>
+                < Button
+                    variant="ghost"
+                    size="lg"
+                    onClick={() => navigate(`/forum`)}
+                >
+                    <Text 
+                        fontWeight="bold"
+                        color='#FFF1D0'
                     >
-                    Home
-                </Text>
-            </Button>
-            < Button
-                variant="ghost"
-                size="lg"
-                onClick={() => navigate(`/forum`)}
-            >
-                <Text 
-                    fontWeight="bold"
-                    color='#FFF1D0'
+                        Forum
+                    </Text>
+                </Button>
+                < Button
+                    variant="ghost"
+                    size="lg"
+                    onClick={() => navigate(`/profile`)}
                 >
-                    Forum
-                </Text>
-            </Button>
-            < Button
-                variant="ghost"
-                size="lg"
-                onClick={() => navigate(`/profile`)}
-            >
-                <Text 
-                    fontWeight="bold"
-                    color='#FFF1D0'
+                    <Text 
+                        fontWeight="bold"
+                        color='#FFF1D0'
+                    >
+                        Profile
+                    </Text>
+                </Button>
+                < Button
+                    variant="ghost"
+                    size="lg"
+                    onClick={() => navigate(`/login`)}
                 >
-                    Profile
-                </Text>
-            </Button>
-            < Button
-                variant="ghost"
-                size="lg"
-                onClick={() => navigate(`/login`)}
-            >
-                <Text 
-                    fontWeight="bold"
-                    color='#FFF1D0'
-                >
-                    Login
-                </Text>
-            </Button>
+                    <Text 
+                        fontWeight="bold"
+                        color='#FFF1D0'
+                    >
+                        Login
+                    </Text>
+                </Button>
+            </Flex>
+            <Flex justify="flex-end">
+                <Button
+                    variant="subtle"
+                    size="lg"
+                    bg="#88C380">
+                    <Text 
+                        fontWeight="bold"
+                        color='#AE505F'
+                    >Log out</Text>
+                    </Button>
+            </Flex>
         </Flex>
     )
 }
