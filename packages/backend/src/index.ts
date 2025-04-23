@@ -4,6 +4,7 @@ import express, { Request, Response } from 'express';
 import PostModel, { PostInput } from './models/post'; 
 import { connectToMongo } from './config/db';
 import usersRouter from './controllers/users'
+import loginRouter from './controllers/login';
 
 
 const app = express();
@@ -15,6 +16,7 @@ app.use(morgan('dev'))
 connectToMongo();
 
 app.use('/api/users', usersRouter)
+app.use('/api/login', loginRouter)
 
 app.get('/', (req: Request, res: Response) => {
   res.send('<h1>Hello World!</h1>');

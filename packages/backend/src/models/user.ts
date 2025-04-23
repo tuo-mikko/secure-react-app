@@ -1,6 +1,7 @@
 import mongoose, {Document, Schema, Model} from 'mongoose'
 
 export interface IUser extends Document {
+    _id : mongoose.Types.ObjectId
     username : string,
     name : string,
     passwordHash: string,
@@ -27,15 +28,6 @@ userSchema.set('toJSON', {
     delete returnedObject.passwordHash;
   }
 });
-
-userSchema.set('toJSON', {
-    transform: (_document, returnedObject: any) => {
-      returnedObject.id = returnedObject._id.toString();
-      delete returnedObject._id;
-      delete returnedObject.__v;
-      delete returnedObject.passwordHash;
-    }
-  });   
 
 const UserModel: Model<IUser> = mongoose.model<IUser>('User', userSchema)
 
