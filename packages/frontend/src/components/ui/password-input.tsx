@@ -135,11 +135,15 @@ export const PasswordStrengthMeter = React.forwardRef<
   )
 })
 
-function getColorPalette(percent: number) {
+function getColorPalette(passwordStrength: number) {
   switch (true) {
-    case percent < 33:
-      return { label: "Low", colorPalette: "red" }
-    case percent < 66:
+    case passwordStrength == 1:
+      return { label: "Too short", colorPalette: "red" }
+    case passwordStrength == 2:
+      return { label: "Too common", colorPalette: "red" }
+    case passwordStrength == 3:
+      return { label: "Low", colorPalette: "orange" }
+    case passwordStrength == 4:
       return { label: "Medium", colorPalette: "orange" }
     default:
       return { label: "High", colorPalette: "green" }
