@@ -6,24 +6,25 @@ import { Flex,
     Heading,
     GridItem } from '@chakra-ui/react'
 
-const baseUrl = 'http://localhost:3001/api/posts?limit=2&sort=desc'
+const baseUrl = 'http://localhost:3001/api/posts'
 interface Post {
     title: string;
     message: string;
+    postDateTime: string;
 };
 
 function Home() {
-    const [posts, setPosts] = useState([]); //db posts
+    const [post, setPost] = useState<Post[]>([]); //db posts
     useEffect(() => {
             fetchPosts();
         }, []);
 
     //fetch forumposts from database
     const fetchPosts = () => {
-        axios.get(baseUrl)
+        axios.get<Post[]>(baseUrl)
         .then(response => {
             console.log(response.data);
-            setPosts(response.data);
+            setPost(response.data);
         })
         .catch(error => {
             console.error('Error fetching data:', error);
@@ -44,7 +45,7 @@ function Home() {
                 templateColumns="repeat(3,1fr)"
             >
                     <GridItem rowSpan={3} colSpan={2}>
-                    <Text>Recent threads</Text>
+                    <Text fontSize="2xl">Recent threads</Text>
                     <Flex
                         bg="#f4f1bb"
                         p="6"
@@ -55,7 +56,8 @@ function Home() {
                         borderColor="#37371f"
                         width="30"
                     >
-                        {posts
+                        {post
+                        .sort((a,b) => (new Date(b.postDateTime).getTime() - new Date(a.postDateTime).getTime()))
                         .slice(0,4)
                         .map((post) => (
                             <Flex
