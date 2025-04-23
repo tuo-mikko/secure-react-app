@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { PasswordInput } from "../components/ui/password-input"
 import loginService from '../services/login'
+import { useNavigate } from 'react-router-dom';
 import { 
     Box,
     Button,
@@ -28,6 +29,7 @@ function Home() {
     const [user, setUser] = React.useState(null);
     const [password, setPassword] = React.useState('');
     const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
             fetchPosts();
@@ -127,19 +129,27 @@ function Home() {
                                         onChange={({ target }) => setUsername(target.value)} />
                                 </Field.Root>
 
-                            <Field.Root>
-                                <Field.Label>Password</Field.Label>
-                                    <PasswordInput 
-                                        type="password"
-                                        value={password}
-                                        onChange={({ target }) => setPassword(target.value)} />
-                            </Field.Root>
-
-                            <Button 
-                                type="submit"
-                                bg="#35544f"
-                            >
-                                Submit</Button>
+                                <Field.Root>
+                                    <Field.Label>Password</Field.Label>
+                                        <PasswordInput 
+                                            type="password"
+                                            value={password}
+                                            onChange={({ target }) => setPassword(target.value)} />
+                                </Field.Root>
+                                <Flex p="1">
+                                    <Button 
+                                        type="submit"
+                                        bg="#35544f"
+                                        size="lg"
+                                    ><Text fontWeight="bold">Submit</Text>
+                                    </Button>
+                                    <Button 
+                                        variant="ghost"
+                                        size="lg"
+                                        onClick={() => navigate(`/createAccount`)}>
+                                        Create an account
+                                    </Button> 
+                                </Flex>  
                             </Stack>
                         </form>
                     </Box>
