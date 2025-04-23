@@ -53,12 +53,6 @@ function Header() {
                     size="lg"
                     onClick={() => navigate(`/login`)}
                 >
-                    <Text 
-                        fontWeight="bold"
-                        color='#FFF1D0'
-                    >
-                        Login
-                    </Text>
                 </Button>
             </Flex>
             <Flex justify="flex-end">

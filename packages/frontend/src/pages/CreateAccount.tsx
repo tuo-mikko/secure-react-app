@@ -13,7 +13,7 @@ import {
     Text
  } from '@chakra-ui/react'
 
-const Login = () =>  {
+const CreateAccount = () =>  {
     const [username, setUsername] = React.useState('');
     const [password, setPassword] = React.useState('');
     const [user, setUser] = React.useState(null);
@@ -101,4 +101,4 @@ const Login = () =>  {
     )
 }
 
-export default Login;
+export default CreateAccount;
