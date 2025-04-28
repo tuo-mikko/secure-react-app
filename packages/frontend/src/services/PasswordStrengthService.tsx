@@ -44,6 +44,7 @@ export class PasswordStrengthService {
         }
 
         // Return the strength of this password
+        //console.log(currentPasswordStrength);
         return currentPasswordStrength;
     }
 }

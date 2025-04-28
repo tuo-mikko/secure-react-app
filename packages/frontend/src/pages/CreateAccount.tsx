@@ -2,6 +2,7 @@ import * as React from 'react'
 import { PasswordInput, PasswordStrengthMeter } from "../components/ui/password-input"
 import { PasswordStrengthService } from '../services/PasswordStrengthService'
 import { useForm, SubmitHandler } from "react-hook-form"
+import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { 
     Field,
@@ -12,15 +13,18 @@ import {
     Stack,
     Text
  } from '@chakra-ui/react'
+import { Navigate } from 'react-router-dom'
 
 const CreateAccount = () =>  {
+    const navigate = useNavigate();
     const [username, setUsername] = React.useState('');
     const [password, setPassword] = React.useState('');
     const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
     const [passwordStrength, setPasswordStrength] = React.useState<number>(0);
+    const [passwordAccepted, setPasswordAccepted] = React.useState<boolean>(false);
     const service = new PasswordStrengthService();
     const baseUrl = 'http://localhost:3001/api/users'
-    
+
     const {
         register,
         handleSubmit,
@@ -93,16 +97,31 @@ const CreateAccount = () =>  {
                                         onChange={({ target }) => {
                                             setPassword(target.value);
                                             setPasswordStrength(service.checkPasswordStrength(target.value));
+                                            setPasswordAccepted(passwordStrength == 5);
                                         }}
                                     />
+                                    
                                  <PasswordStrengthMeter value={passwordStrength}/>
                             </Stack>
                         </Field.Root>
-                    <Button 
-                        type="submit"
-                        bg="#35544f"
-                    >
-                        Submit</Button>
+                        <Button 
+                            disabled={!passwordAccepted}
+                            id = "submitButton"
+                            type="submit"
+                            bg="#35544f"
+                            onClick={() => {
+                                alert("New account created");
+                                navigate(`/home`);}}
+                        >
+                            Submit
+                        </Button>
+                        <Button
+                            type="submit"
+                            bg='#5d6967'
+                            onClick={() => navigate(`/home`)}
+                        >
+                            Cancel
+                        </Button>
                     </Stack>
                 </form>
                 </Box>
