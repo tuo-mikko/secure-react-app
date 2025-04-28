@@ -106,7 +106,7 @@ export const PasswordStrengthMeter = React.forwardRef<
   HTMLDivElement,
   PasswordStrengthMeterProps
 >(function PasswordStrengthMeter(props, ref) {
-  const { max = 4, value, ...rest } = props
+  const { max = 5, value, ...rest } = props
 
   const percent = (value / max) * 100
   const { label, colorPalette } = getColorPalette(percent)
@@ -136,16 +136,19 @@ export const PasswordStrengthMeter = React.forwardRef<
 })
 
 function getColorPalette(passwordStrength: number) {
+  console.log("passwordStrengt ", passwordStrength)
   switch (true) {
-    case passwordStrength == 1:
+    case passwordStrength == 20:
       return { label: "Too short", colorPalette: "red" }
-    case passwordStrength == 2:
+    case passwordStrength == 40:
       return { label: "Too common", colorPalette: "red" }
-    case passwordStrength == 3:
+    case passwordStrength == 60:
       return { label: "Low", colorPalette: "orange" }
-    case passwordStrength == 4:
+    case passwordStrength == 80:
       return { label: "Medium", colorPalette: "orange" }
-    default:
+    case passwordStrength == 100:
       return { label: "High", colorPalette: "green" }
+    default:
+      return { label: "Weak", colorPalette: "pink" }
   }
 }
