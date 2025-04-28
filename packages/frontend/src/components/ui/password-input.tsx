@@ -136,7 +136,6 @@ export const PasswordStrengthMeter = React.forwardRef<
 })
 
 function getColorPalette(passwordStrength: number) {
-  console.log("passwordStrengt ", passwordStrength)
   switch (true) {
     case passwordStrength == 20:
       return { label: "Too short", colorPalette: "red" }
