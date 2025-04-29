@@ -14,17 +14,19 @@ import {
     Field,
     Textarea, } from '@chakra-ui/react';
 
-
 const postsUrl = 'http://localhost:3001/api/posts'
 const usersUrl = 'http://localhost:3001/api/users'
 
+//post information from posts database
 type PostData = {
     title: string;
     message: string;
     userId: string;
     postDateTime: string;
+    id: string;
 };
 
+//connect userid to username to show in posts
 interface User {
     id: string;
     username: string;
@@ -33,7 +35,9 @@ interface User {
 const Forum = () => {
     const [posts, setPost] = useState<PostData[]>([]); //db posts
     const [postCreatorUN, setPostCreatorUN] = useState('');
-
+    const [isOpen, setIsOpen] = useState<boolean>(false); //Popup prop
+ 
+    //handle creating a new post on forum
     const {
         register,
         handleSubmit,
@@ -62,7 +66,6 @@ const Forum = () => {
     const fetchPosts = () => {
         axios.get<PostData[]>(postsUrl)
         .then(response => {
-            console.log(response.data);
             setPost(response.data);
         })
         .catch(error => {
@@ -78,9 +81,6 @@ const Forum = () => {
             return response.data.username;
         })
     }
-
-    //Popup prop
-    const [isOpen, setIsOpen] = useState<boolean>(false);
 
     return (
         <Flex 
@@ -163,30 +163,33 @@ const Forum = () => {
                 width="30"
                 >
                 {posts.map((post) => (
-                    <Flex
-                        bg="white"
-                        p="5"
-                        borderRadius="md"
-                        borderWidth="1"
-                        direction = "column"
-                        >
-                        <Grid
-                            w="500"
-                            templateColumns="repeat(6, 1fr)"
-                            templateRows="repeate(4, 1fr)"
-                            gap={2}>
-                            <GridItem rowSpan={1} colSpan={4}>
-                                <Heading>{post.title}</Heading>
-                            </GridItem>
-                            <GridItem rowSpan={1} colSpan={4}>
-                                <p>{post.message}</p>
-                            </GridItem>
-                            <GridItem rowSpan={1} colSpan={4}>
-                                <Text textStyle="xs">{post.postDateTime}</Text>
-                                <Text textStyle="xs">{post.userId}</Text>
-                            </GridItem>
-                        </Grid>
-                    </Flex>
+                    <div key={post.id}>
+                        <Flex
+                            bg="white"
+                            p="5"
+                            borderRadius="md"
+                            borderWidth="1"
+                            direction = "column"
+                            >
+                            <Grid
+                                w="500"
+                                templateColumns="repeat(6, 1fr)"
+                                templateRows="repeate(4, 1fr)"
+                                gap={2}
+                                >
+                                <GridItem rowSpan={1} colSpan={4}>
+                                    <Heading>{post.title}</Heading>
+                                </GridItem>
+                                <GridItem rowSpan={1} colSpan={4}>
+                                    <p>{post.message}</p>
+                                </GridItem>
+                                <GridItem rowSpan={1} colSpan={4}>
+                                    <Text textStyle="xs">{post.userId}</Text>
+                                    <Text textStyle="xs">{post.postDateTime}</Text>
+                                </GridItem>
+                            </Grid>
+                        </Flex>
+                    </div>
                 ))}
             </Flex>
         </Flex>
