@@ -36,7 +36,9 @@ const Forum = () => {
     const [posts, setPost] = useState<PostData[]>([]); //db posts
     const [postCreatorUN, setPostCreatorUN] = useState('');
     const [isOpen, setIsOpen] = useState<boolean>(false); //Popup prop
- 
+    const [published, setPublished] = useState<boolean>(false);
+    const [title, setTitle] = useState('');
+  
     //handle creating a new post on forum
     const {
         register,
@@ -51,6 +53,8 @@ const Forum = () => {
             message: data.message,
         })
         .then(function (response) {
+            setPublished(true)
+            setTitle(data.title)
             console.log(response);
         })
         .catch(function (error) {
@@ -152,6 +156,21 @@ const Forum = () => {
                 )}
 
             </Flex>
+            <Box
+                display={published ? "block" : "none"}
+                borderRadius="md"
+                bg="#88C380"
+                p="3"
+                maxW="20"
+                >
+                <Text 
+                    fontWeight="bold"
+                    color="white"
+                    >Thread published with title: </Text>
+                <Text
+                    color="white">
+                    {title} </Text>
+            </Box>
             <Flex
                 bg="#f4f1bb"
                 p="6"
