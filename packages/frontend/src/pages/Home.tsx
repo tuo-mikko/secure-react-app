@@ -17,10 +17,13 @@ import {
 } from '@chakra-ui/react'
 
 const baseUrl = 'http://localhost:3001/api/posts'
+
+//post data categories
 interface Post {
     title: string;
     message: string;
     postDateTime: string;
+    id: string;
 };
 
 function Home() {
@@ -39,7 +42,6 @@ function Home() {
     const fetchPosts = () => {
         axios.get<Post[]>(baseUrl)
         .then(response => {
-            console.log(response.data);
             setPost(response.data);
         })
         .catch(error => {
@@ -47,6 +49,7 @@ function Home() {
         }); 
     };
 
+    //login functionalities
     const handleLogin = async (event: React.FormEvent<HTMLElement>) => {
         event.preventDefault()    
         console.log('logging in with', username, password)  
@@ -97,16 +100,19 @@ function Home() {
                         .sort((a,b) => (new Date(b.postDateTime).getTime() - new Date(a.postDateTime).getTime()))
                         .slice(0,4)
                         .map((post) => (
-                            <Flex
-                                bg="white"
-                                p="5"
-                                borderRadius="md"
-                                borderWidth="1"
-                                direction = "column"
-                                >
-                                <Heading>{post.title}</Heading>
-                                <p>{post.message}</p>
-                            </Flex>
+                            <div
+                                key={post.id}>
+                                <Flex
+                                    bg="white"
+                                    p="5"
+                                    borderRadius="md"
+                                    borderWidth="1"
+                                    direction = "column"
+                                    >
+                                    <Heading>{post.title}</Heading>
+                                    <p>{post.message}</p>
+                                </Flex>
+                            </div>
                         ))}
                     </Flex>
                 </GridItem>
