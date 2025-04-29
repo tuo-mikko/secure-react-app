@@ -5,7 +5,7 @@ import { Route, Routes } from 'react-router-dom';
 import Home from './pages/Home';
 import Forum from './pages/Forum';
 import Profile from './pages/Profile';
-import Login from './pages/Login';
+import CreateAccount from './pages/CreateAccount';
 import Header from './components/Header';
 
 import { Box } from '@chakra-ui/react'
@@ -16,9 +16,9 @@ function App() {
         <Header></Header>
         <Routes>
           <Route
-            path='/login'
+            path='/createAccount'
             element={
-              <Login />
+              <CreateAccount />
             }  
           />
           <Route
