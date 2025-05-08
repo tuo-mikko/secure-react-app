@@ -7,9 +7,11 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 
 import { connectToMongo } from './config/db';
+
 import usersRouter from './controllers/users';
 import authRouter from './controllers/auth';
 import postsRouter from './routes/posts';
+
 
 const app = express();
 

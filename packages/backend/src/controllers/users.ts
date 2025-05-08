@@ -9,7 +9,6 @@ interface CreateUserRequestBody {
   name: string;
   password: string;
 }
-
 const PEPPER = process.env.PEPPER || '';
 
 usersRouter.post(
