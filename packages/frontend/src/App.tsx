@@ -1,46 +1,51 @@
-import React from 'react';
-import { Route, Routes } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Routes, Route, useNavigate } from 'react-router-dom';
+import { Box } from '@chakra-ui/react';
 
-//import Login from './pages/Login';
+import Header from './components/Header';
 import Home from './pages/Home';
 import Forum from './pages/Forum';
 import Profile from './pages/Profile';
 import CreateAccount from './pages/CreateAccount';
-import Header from './components/Header';
 
-import { Box } from '@chakra-ui/react'
+import auth, { LoggedUser } from './services/auth';
 
 function App() {
+  // store the logged‐in user
+  const [user, setUser] = useState<LoggedUser | null>(null);
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    await auth.logout();    
+    setUser(null);       
+    navigate('/home');     
+  };
+
   return (
-      <Box>
-        <Header></Header>
-        <Routes>
-          <Route
-            path='/createAccount'
-            element={
-              <CreateAccount />
-            }  
-          />
-          <Route
-            path='/home'
-            element={
-              <Home />
-            }  
-          />
-          <Route
-            path='/forum'
-            element={
-              <Forum />
-            }  
-          />
-          <Route
-            path='/profile'
-            element={
-              <Profile />
-            }  
-          />
-        </Routes>
-      </Box>
+    <Box>
+      <Header user={user} onLogout={handleLogout} />
+
+      <Routes>
+        <Route
+          path='/createAccount'
+          element={<CreateAccount />}
+        />
+        <Route
+          path='/home'
+          element={
+            <Home user={user} setUser={setUser} />
+          }
+        />
+        <Route
+          path="/forum"
+          element={<Forum user={user} />}
+        />
+        <Route
+          path='/profile'
+          element={<Profile user={user} />}
+        />
+      </Routes>
+    </Box>
   );
 }
 
