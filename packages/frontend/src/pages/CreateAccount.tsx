@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { PasswordInput, PasswordStrengthMeter } from "../components/ui/password-input"
 import { PasswordStrengthService } from '../services/PasswordStrengthService'
+//import freeUsername from '../services/CreateAccountService'
 import { useForm, SubmitHandler } from "react-hook-form"
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
@@ -18,6 +19,7 @@ import { Navigate } from 'react-router-dom'
 const CreateAccount = () =>  {
     const navigate = useNavigate();
     const [username, setUsername] = React.useState('');
+    const [freeUsername, setFreeUsername] = React.useState<boolean>(false);
     const [password, setPassword] = React.useState('');
     const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
     const [passwordStrength, setPasswordStrength] = React.useState<number>(0);
@@ -44,10 +46,19 @@ const CreateAccount = () =>  {
             password: data.password,
         })
         .then(function (response) {
+            setFreeUsername(true);
             console.log(response);
         })
         .catch(function (error) {
-            console.log(error);
+            if (axios.isAxiosError(error) && error.response) {
+               if (error.response.status === 400 && error.response.data.message) {
+                alert(error.response.data.message);
+               } else {
+                alert("unexpected error")
+               }
+            } else {
+                console.log(error);
+            }
         })
     };
 
@@ -110,8 +121,11 @@ const CreateAccount = () =>  {
                             type="submit"
                             bg="#35544f"
                             onClick={() => {
-                                alert("New account created");
-                                navigate(`/home`);}}
+                                if (freeUsername) {
+                                    alert("New account created");
+                                    navigate(`/home`);
+                                } 
+                            }}
                         >
                             Submit
                         </Button>

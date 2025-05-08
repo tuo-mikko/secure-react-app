@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "Front end for group project for Secure Programming course at Tampere Universities",
   "private": true,
+  "proxy": "http://localhost:3001",
   "dependencies": {
     "@chakra-ui/react": "^3.14.2",
     "@emotion/react": "^11.14.0",

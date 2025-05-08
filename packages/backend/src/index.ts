@@ -1,95 +1,51 @@
+
 import dotenv from 'dotenv';
 dotenv.config();
-import cors from 'cors';
+
 import express, { Request, Response } from 'express';
-import PostModel, { PostInput } from './models/post'; 
+import cookieParser from 'cookie-parser';
+import cors from 'cors';
+
 import { connectToMongo } from './config/db';
-import usersRouter from './controllers/users'
-import loginRouter from './controllers/login';
+
+import usersRouter from './controllers/users';
+import authRouter from './controllers/auth';
+import postsRouter from './routes/posts';
+
 
 const app = express();
-app.use(express.json())
 
-app.use(cors());
-
+// Global middleware
 let morgan = require('morgan')
 app.use(morgan('dev'))
+app.use(express.json());
+app.use(cookieParser());
+app.use(cors({
+  origin: 'http://localhost:3000',
+  credentials: true
+}));
 
+
+// Database
 connectToMongo();
 
-app.use('/api/users', usersRouter)
-app.use('/api/login', loginRouter)
+// Routers
+app.use('/api/users', usersRouter);
+app.use('/api', authRouter);
+app.use('/api/posts', postsRouter);
 
-app.get('/', (req: Request, res: Response) => {
+// Basic health check
+app.get('/', (_req: Request, res: Response) => {
   res.send('<h1>Hello World!</h1>');
 });
 
-app.get('/api/posts', async (req: Request, res: Response) => {
-  try {
-    const posts = await PostModel.find({});
-    res.json(posts);
-  } catch (error) {
-    res.status(500).json({ error: 'Failed to fetch posts' });
-  }
+// Handle 404
+app.use((req: Request, res: Response) => {
+  res.status(404).json({ error: 'unknown endpoint' });
 });
 
-app.get('/api/posts/:id', async (req: Request, res: Response) => {
-  try {
-    const id = req.params.id
-    const post = await PostModel.findById(id);
-    res.json(post);
-  } catch (error) {
-    res.status(500).json({ error: 'Failed to fetch posts' });
-  }
-});
-
-app.delete('/api/posts/:id', async (req: Request, res: Response) => {
-  try {
-    const deletedPost = await PostModel.findByIdAndDelete(req.params.id);
-    if(deletedPost){
-      res.json(deletedPost);
-      res.status(204);
-    } else {
-      res.status(404).json({ error: 'Post not found' });
-    }
-  } catch (error) {
-    res.status(500).json({ error: 'Failed to fetch posts' });
-  }
-});
-
-app.post('/api/posts/', async (req: Request<{}, {}, PostInput>, res: Response) => {
-  
-  const body = req.body
-
-  if (!body.title) {
-    res.status(400).json({ 
-      error: 'Not all content present' 
-    })
-    return;
-  }
-  
-  const newPost = new PostModel({
-    title: body.title,
-    userId: body.userId,
-    message: body.message,
-    postDateTime: new Date()
-  });
-  
-  try {
-    const savedPost = await newPost.save();
-    res.status(201).json(savedPost);
-  } catch (err) {
-    res.status(400).json({ error: 'Could not save post' });
-  }
-})
-
-const unknownEndpoint = (req : Request, res: Response) => {
-  res.status(404).send({ error: 'unknown endpoint' })
-}
-
-const PORT = process.env.PORT;
-
+// Start server
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
-
