@@ -15,18 +15,20 @@ export interface PostInput {
 }
 
 // Define schema
+// The model attempts to reach a higher level of security by defining the
+// types more tightly, and limiting the amount of input accepted from the user
 const postSchema: Schema<PostDocument> = new Schema({
-  title: { type: String, required: true },
+  title: { type: String, required: true, maxlength:120},
   userId: {
     type: ObjectId,
     required: true,
     ref: 'User',
   },
-  message: { type: String, required: true },
+  message: { type: String, required: true, maxlength:450 },
   postDateTime: { type: Date, default: Date.now },
 });
 
-
+// Modify what data ends up in the frontend
 postSchema.set('toJSON', {
     transform: (_document, returnedObject: any) => {
       returnedObject.id = returnedObject._id.toString();

@@ -8,6 +8,7 @@ export interface IUser extends Document {
     posts: mongoose.Types.ObjectId[]
 }
 
+// Strictly define the types
 const userSchema: Schema<IUser> = new Schema({
     username: {type: String, required: true, unique: true, minlength:3, maxlength:30},
     name: {type: String, minlength:3, maxlength:30},
@@ -20,6 +21,8 @@ const userSchema: Schema<IUser> = new Schema({
     ],
 })
 
+
+// Prevent sensitive data from ending up in the frontend
 userSchema.set('toJSON', {
   transform: (_document, returnedObject: any) => {
     returnedObject.id = returnedObject._id.toString();

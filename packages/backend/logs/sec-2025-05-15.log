@@ -1,0 +1,28 @@
+{"level":"info","message":"GET /api/me → 401","meta":{}}
+{"level":"info","message":"GET /api/me → 401","meta":{}}
+{"ip":"::ffff:127.0.0.1","level":"warn","message":"REFRESH_REJECT"}
+{"level":"info","message":"POST /api/refresh → 401","meta":{}}
+{"level":"info","message":"GET /api/posts/latest → 304","meta":{}}
+{"level":"info","message":"GET /api/posts/latest → 200","meta":{}}
+{"ip":"::ffff:127.0.0.1","level":"warn","message":"REFRESH_REJECT"}
+{"level":"info","message":"POST /api/refresh → 401","meta":{}}
+{"ip":"::ffff:127.0.0.1","level":"info","message":"LOGIN_SUCCESS","userId":"681dc27f89abab51b45cb5be"}
+{"level":"info","message":"POST /api/login → 200","meta":{}}
+{"ip":"::ffff:127.0.0.1","level":"info","message":"LOGOUT","userId":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MWRjMjdmODlhYmFiNTFiNDVjYjViZSIsInVzZXJuYW1lIjoiTG90dXNFbmpveWVyIiwianRpIjoiYzg1NjA0ZjEtYmRmZi00ZTEzLWIxODYtYmUxZTgwYjBmNjAyIiwiaWF0IjoxNzQ3MzM2NDIzLCJleHAiOjE3NDczMzczMjN9.xfQQpac57LoXHUYvQvUwN6pD2RZJlTwew_hu8VIGsCA"}
+{"level":"info","message":"POST /api/logout → 204","meta":{}}
+{"ip":"::ffff:127.0.0.1","level":"info","message":"LOGOUT","userId":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MWRjMjdmODlhYmFiNTFiNDVjYjViZSIsInVzZXJuYW1lIjoiTG90dXNFbmpveWVyIiwianRpIjoiYzg1NjA0ZjEtYmRmZi00ZTEzLWIxODYtYmUxZTgwYjBmNjAyIiwiaWF0IjoxNzQ3MzM2NDIzLCJleHAiOjE3NDczMzczMjN9.xfQQpac57LoXHUYvQvUwN6pD2RZJlTwew_hu8VIGsCA"}
+{"level":"info","message":"POST /api/logout → 204","meta":{}}
+{"ip":"::ffff:127.0.0.1","level":"info","message":"LOGOUT","userId":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MWRjMjdmODlhYmFiNTFiNDVjYjViZSIsInVzZXJuYW1lIjoiTG90dXNFbmpveWVyIiwianRpIjoiYzg1NjA0ZjEtYmRmZi00ZTEzLWIxODYtYmUxZTgwYjBmNjAyIiwiaWF0IjoxNzQ3MzM2NDIzLCJleHAiOjE3NDczMzczMjN9.xfQQpac57LoXHUYvQvUwN6pD2RZJlTwew_hu8VIGsCA"}
+{"level":"info","message":"POST /api/logout → 204","meta":{}}
+{"ip":"::ffff:127.0.0.1","level":"info","message":"LOGOUT","userId":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MWRjMjdmODlhYmFiNTFiNDVjYjViZSIsInVzZXJuYW1lIjoiTG90dXNFbmpveWVyIiwianRpIjoiYzg1NjA0ZjEtYmRmZi00ZTEzLWIxODYtYmUxZTgwYjBmNjAyIiwiaWF0IjoxNzQ3MzM2NDIzLCJleHAiOjE3NDczMzczMjN9.xfQQpac57LoXHUYvQvUwN6pD2RZJlTwew_hu8VIGsCA"}
+{"level":"info","message":"POST /api/logout → 204","meta":{}}
+{"ip":"::ffff:127.0.0.1","level":"info","message":"LOGOUT","userId":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MWRjMjdmODlhYmFiNTFiNDVjYjViZSIsInVzZXJuYW1lIjoiTG90dXNFbmpveWVyIiwianRpIjoiYzg1NjA0ZjEtYmRmZi00ZTEzLWIxODYtYmUxZTgwYjBmNjAyIiwiaWF0IjoxNzQ3MzM2NDIzLCJleHAiOjE3NDczMzczMjN9.xfQQpac57LoXHUYvQvUwN6pD2RZJlTwew_hu8VIGsCA"}
+{"level":"info","message":"POST /api/logout → 204","meta":{}}
+{"level":"info","message":"GET /api/posts → 401","meta":{}}
+{"level":"info","message":"GET /api/posts → 401","meta":{}}
+{"ip":"::ffff:127.0.0.1","level":"warn","message":"REFRESH_MISSING"}
+{"level":"info","message":"POST /api/refresh → 401","meta":{}}
+{"ip":"::ffff:127.0.0.1","level":"warn","message":"REFRESH_MISSING"}
+{"level":"info","message":"POST /api/refresh → 401","meta":{}}
+{"level":"info","message":"GET /api/posts/latest → 200","meta":{}}
+{"level":"info","message":"GET /api/posts/latest → 304","meta":{}}

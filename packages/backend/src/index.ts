@@ -11,6 +11,8 @@ import { connectToMongo } from './config/db';
 import usersRouter from './controllers/users';
 import authRouter from './controllers/auth';
 import postsRouter from './routes/posts';
+import expressWinston from 'express-winston';
+import logger from './utils/logger';
 
 
 const app = express();
@@ -24,7 +26,14 @@ app.use(cors({
   origin: 'http://localhost:3000',
   credentials: true
 }));
-
+app.use(
+  expressWinston.logger({
+    winstonInstance: logger,
+    msg: '{{req.method}} {{req.url}} → {{res.statusCode}}',
+    meta: false,
+    ignoreRoute: (req) => !req.url.startsWith('/api'),
+  })
+);
 
 // Database
 connectToMongo();
