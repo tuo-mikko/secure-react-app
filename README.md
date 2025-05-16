@@ -1,14 +1,18 @@
 # secure-react-app
-This is a group project for the Secure Programming course at Tampere Universities. The idea is to create a simple React application that takes into account OWASP guidelines and security risks in [frontend](https://github.com/tuo-mikko/secure-react-app/tree/main/packages/frontend) and [backend](https://github.com/tuo-mikko/secure-react-app/tree/main/packages/backend) for [API](https://owasp.org/www-project-api-security/) and [Client side](https://owasp.org/www-project-top-10-client-side-security-risks/) security.
+This is a group project for the Secure Programming course at Tampere Universities, by [Mikko Tuominen](https://github.com/tuo-mikko) and [Olivia Takkinen](https://github.com/olivena).
+
+It is a simple React + Node application for the popular television series White Lotus, that takes into account OWASP guidelines and security risks in [frontend](https://github.com/tuo-mikko/secure-react-app/tree/main/packages/frontend) and [backend](https://github.com/tuo-mikko/secure-react-app/tree/main/packages/backend) for [API](https://owasp.org/www-project-api-security/) and [Client side](https://owasp.org/www-project-top-10-client-side-security-risks/) security.
 
 ## How to run it?
 
 Running the software requires the Node ≥ 18.
 
 After cloning the repository, navigate to the root of the project. Then install dependencies with:
+
 `npm run bootstrap`
 
 After the dependencies finish loading, start both the backend and frontend in a single terminal with:
+
 `npm start`
 
 Now, the system should be up and running.
