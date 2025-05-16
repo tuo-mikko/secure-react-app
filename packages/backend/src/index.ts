@@ -26,6 +26,8 @@ app.use(cors({
   origin: 'http://localhost:3000',
   credentials: true
 }));
+
+// Logger
 app.use(
   expressWinston.logger({
     winstonInstance: logger,
