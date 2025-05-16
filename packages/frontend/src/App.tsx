@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import { Box } from '@chakra-ui/react';
 
@@ -11,15 +11,31 @@ import CreateAccount from './pages/CreateAccount';
 import auth, { LoggedUser } from './services/auth';
 
 function App() {
-  // store the logged‐in user
+  // current logged-in user (null when not logged in)
   const [user, setUser] = useState<LoggedUser | null>(null);
+  // flag: finished the initial /api/me check
+  const [checked, setChecked] = useState(false);
+
   const navigate = useNavigate();
 
+  /* ── run once on mount – ask server “Who am I?” ─────────── */
+  useEffect(() => {
+    auth
+      .whoAmI()
+      .then(setUser)         
+      .catch(() => setUser(null))
+      .finally(() => setChecked(true));
+  }, []);
+
+  /* logout handler passed to Header */
   const handleLogout = async () => {
-    await auth.logout();    
-    setUser(null);       
-    navigate('/home');     
+    await auth.logout();     
+    setUser(null);           
+    navigate('/home');      
   };
+
+  /* wait until /api/me returns before rendering */
+  if (!checked) return null;
 
   return (
     <Box>
@@ -27,22 +43,25 @@ function App() {
 
       <Routes>
         <Route
-          path='/createAccount'
+          path="/createAccount"
           element={<CreateAccount />}
         />
         <Route
-          path='/home'
-          element={
-            <Home user={user} setUser={setUser} />
-          }
+          path="/home"
+          element={<Home user={user} setUser={setUser} />}
         />
         <Route
           path="/forum"
           element={<Forum user={user} />}
         />
         <Route
-          path='/profile'
+          path="/profile"
           element={<Profile user={user} />}
+        />
+        {/* fall-back route */}
+        <Route
+          path="*"
+          element={<Home user={user} setUser={setUser} />}
         />
       </Routes>
     </Box>

@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import api from '../services/api';
@@ -16,83 +17,62 @@ import {
 } from '@chakra-ui/react';
 import { LoggedUser } from '@/services/auth';
 
-
-// post information from posts database
+// type for individual forum post
 type PostData = {
+  id: string;
   title: string;
   message: string;
-  userId: string;
   postDateTime: string;
-  id: string;
+  userId: {
+    _id: string;
+    username: string;
+  };
 };
 
-// connect userid to username to show in posts
-interface User {
-  id: string;
-  username: string;
+interface ForumProps {
+  user: LoggedUser | null;
 }
 
-interface ForumProps {
-    user: LoggedUser | null;
-  }
-  
-
-
 const Forum = ({ user }: ForumProps) => {
-  const [posts, setPost] = useState<PostData[]>([]); // db posts
-  const [postCreatorUN, setPostCreatorUN] = useState(''); //
-  const [isOpen, setIsOpen] = useState<boolean>(false); // Popup prop
+  const [posts, setPost] = useState<PostData[]>([]);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   const [published, setPublished] = useState<boolean>(false);
   const [title, setTitle] = useState('');
 
-  // handle creating a new post on forum
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<PostData>();
 
+  // Handle submit
   const onSubmit: SubmitHandler<PostData> = (data) => {
     api
       .post<PostData>('/posts', {
         title: data.title,
         message: data.message,
       })
-      .then(function (response) {
+      .then((response) => {
         setPublished(true);
         setTitle(data.title);
-        console.log(response);
+        fetchPosts();
       })
-      .catch(function (error) {
+      .catch((error) => {
         console.log(error);
       });
+  };
+
+  // fetch all posts
+  const fetchPosts = () => {
+    api
+      .get<PostData[]>('/posts')
+      .then((response) => setPost(response.data))
+      .catch((error) => console.error('Error fetching data:', error));
   };
 
   useEffect(() => {
     fetchPosts();
   }, []);
-
-  // fetch forumposts from database
-  const fetchPosts = () => {
-    api
-      .get<PostData[]>('/posts')
-      .then((response) => {
-        setPost(response.data);
-      })
-      .catch((error) => {
-        console.error('Error fetching data:', error);
-      });
-  };
-
-  // fetch username based on userID
-  const fetchUsername = (userID: string): Promise<string | null> => {
-    return api
-      .get<User>(`/users/${userID}`)
-      .then((response) => {
-        return response.data.username;
-      })
-      .catch(() => null);
-  };
 
   return (
     <Flex direction="column" align="center" justify="center" gap="4">
@@ -100,6 +80,7 @@ const Forum = ({ user }: ForumProps) => {
         FORUM
       </Text>
 
+      {/* post creation section */}
       <Flex align="center" justify="center" direction="column">
         {user ? (
           <Button
@@ -135,7 +116,7 @@ const Forum = ({ user }: ForumProps) => {
                     {...register('title', { required: 'Title is required' })}
                   />
                   <Textarea
-                    placeholder=""
+                    placeholder="Message"
                     variant="outline"
                     margin="1"
                     {...register('message', {
@@ -158,6 +139,7 @@ const Forum = ({ user }: ForumProps) => {
         )}
       </Flex>
 
+      {/* publish notification */}
       <Box
         display={published ? 'block' : 'none'}
         borderRadius="md"
@@ -166,11 +148,12 @@ const Forum = ({ user }: ForumProps) => {
         maxW="20"
       >
         <Text fontWeight="bold" color="white">
-          Thread published with title:{' '}
+          Thread published with title:
         </Text>
         <Text color="white">{title}</Text>
       </Box>
 
+      {/* post list */}
       <Flex
         bg="#f4f1bb"
         p="6"
@@ -193,7 +176,7 @@ const Forum = ({ user }: ForumProps) => {
               <Grid
                 w="500"
                 templateColumns="repeat(6, 1fr)"
-                templateRows="repeate(4, 1fr)"
+                templateRows="repeat(4, 1fr)"
                 gap={2}
               >
                 <GridItem rowSpan={1} colSpan={4}>
@@ -203,8 +186,12 @@ const Forum = ({ user }: ForumProps) => {
                   <p>{post.message}</p>
                 </GridItem>
                 <GridItem rowSpan={1} colSpan={4}>
-                  <Text color="gray.800" textStyle="xs">{post.userId}</Text>
-                  <Text color="gray.800" textStyle="xs">{post.postDateTime}</Text>
+                  <Text color="gray.800" textStyle="xs">
+                    by {post.userId?.username ?? 'Unknown'}
+                  </Text>
+                  <Text color="gray.800" textStyle="xs">
+                    {new Date(post.postDateTime).toLocaleString()}
+                  </Text>
                 </GridItem>
               </Grid>
             </Flex>

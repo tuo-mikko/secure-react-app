@@ -144,7 +144,7 @@ authRouter.post('/logout', async (req: Request, res: Response): Promise<void> =>
   }
 });
 
-// GET /api/me  This is used by the browser to verify user identity
+// GET /api/me  
 authRouter.get('/me', authenticate, (req: Request, res: Response): void => {
     const { user } = req as unknown as AuthenticatedRequest;
     res.json({ id: user.id, username: user.username }); 
