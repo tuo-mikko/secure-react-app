@@ -1,0 +1,340 @@
+openapi: 3.0.3
+info:
+  title: White-Lotus Forum API
+  description: >
+    Secure REST API for a simple forum split into **Users**, **Auth** and
+    **Posts** endpoints.  
+    Authentication is handled with HTTP-only cookies:
+
+    * **token** – short-lived JWT access cookie 
+    
+    * **refresh** – long-lived refresh cookie (rotated on `/api/refresh`)  
+
+
+    Endpoints that need a valid access token are marked with the
+    `cookieAuth` security scheme.
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:3001
+
+tags:
+  - name: Authentication
+    description: Login, logout, refresh tokens
+  - name: Users
+    description: Register and fetch user data
+  - name: Posts
+    description: Create, list, and manage posts
+
+components:
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: token           # JWT access cookie set by /api/login or /api/refresh
+
+  schemas:
+    # Auth
+    LoginRequest:
+      type: object
+      required: [username, password]
+      properties:
+        username:
+          type: string
+          example: Lotus
+        password:
+          type: string
+          example: Salasana123!
+
+    LoginSuccess:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Mongo ObjectId
+        username:
+          type: string
+        name:
+          type: string
+      example:
+        id: 65bfa6973d21bfa57af8dced
+        username: Lotus
+        name: LotusMaster95
+
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+      example:
+        error: Invalid username or password
+
+    # Users
+    NewUser:
+      type: object
+      required: [username, name, password]
+      properties:
+        username:
+          type: string
+          example: Lotus
+        name:
+          type: string
+          example: Lotus Master 95
+        password:
+          type: string
+          example: Salasana123!
+
+    UserPublic:
+      type: object
+      properties:
+        id:
+          type: string
+        username:
+          type: string
+        name:
+          type: string
+
+    # Posts
+    Post:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        message:
+          type: string
+        postDateTime:
+          type: string
+          format: date-time
+        userId:
+          type: object
+          properties:
+            username:
+              type: string
+      example:
+        id: 6650e0700af6b5fa3f361234
+        title: Music of White Lotus
+        message: Certified bangers only!
+        postDateTime: 2025-05-08T21:44:12.000Z
+        userId:
+          username: Lotus
+
+    NewPost:
+      type: object
+      required: [title, message]
+      properties:
+        title:
+          type: string
+        message:
+          type: string
+      example:
+        title: Music of White Lotus
+        message: Certified bangers only!
+
+paths:
+  
+  # AUTH  
+  /api/login:
+    post:
+      tags: [Authentication]
+      summary: Log in and receive token + refresh cookies
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/LoginRequest' }
+      responses:
+        '200':
+          description: Login successful – cookies set
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/LoginSuccess' }
+        '400':
+          description: Missing fields
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+        '401':
+          description: Invalid credentials
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+
+  /api/refresh:
+    post:
+      tags: [Authentication]
+      summary: Rotate refresh cookie and get a new access cookie
+      responses:
+        '200':
+          description: New cookies issued
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  accessToken:
+                    type: string
+                    example: refreshed
+        '401':
+          description: Missing or invalid refresh token
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+
+  /api/logout:
+    post:
+      tags: [Authentication]
+      summary: Clear cookies and revoke refresh token
+      responses:
+        '204':
+          description: Logged out
+
+  /api/me:
+    get:
+      tags: [Authentication]
+      summary: Return profile of currently authenticated user
+      security:
+        - cookieAuth: []
+      responses:
+        '200':
+          description: Authenticated user info
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/UserPublic' }
+        '401':
+          description: No valid token cookie
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+
+  # USERS  
+  /api/users:
+    post:
+      tags: [Users]
+      summary: Create a new account
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/NewUser' }
+      responses:
+        '201':
+          description: User created
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/UserPublic' }
+        '400':
+          description: Missing fields
+          content: { application/json: { schema: { $ref: '#/components/schemas/Error' } } }
+        '409':
+          description: Username taken
+          content: { application/json: { schema: { $ref: '#/components/schemas/Error' } } }
+
+    get:
+      summary: List all users
+      tags: [Users]
+      responses:
+        '200':
+          description: Array of public user info
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: '#/components/schemas/UserPublic' }
+
+  # POSTS  
+  /api/posts:
+    get:
+      tags: [Posts]
+      summary: Get **all** posts (requires cookieAuth)
+      security:
+        - cookieAuth: []
+      responses:
+        '200':
+          description: Array of posts
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: '#/components/schemas/Post' }
+        '401':
+          description: Token missing / expired
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+
+    post:
+      tags: [Posts]
+      summary: Create a new post (requires cookieAuth)
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/NewPost' }
+      responses:
+        '201':
+          description: Post created
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Post' }
+        '400':
+          description: Validation error
+          content: { application/json: { schema: { $ref: '#/components/schemas/Error' } } }
+        '401':
+          description: Token missing / expired
+          content: { application/json: { schema: { $ref: '#/components/schemas/Error' } } }
+
+  /api/posts/latest:
+    get:
+      tags: [Posts]
+      summary: Get the 5 most recent posts (public)
+      responses:
+        '200':
+          description: Latest 5 posts
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: '#/components/schemas/Post' }
+
+  /api/posts/{id}:
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        description: Post ObjectId
+    get:
+      tags: [Posts]
+      summary: Get a single post by id
+      responses:
+        '200':
+          description: Post found
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Post' }
+        '404':
+          description: Post not found
+          content: { application/json: { schema: { $ref: '#/components/schemas/Error' } } }
+
+    delete:
+      tags: [Posts]
+      summary: Delete a post (owner only)
+      security:
+        - cookieAuth: []
+      responses:
+        '204':
+          description: Deleted
+        '401':
+          description: Token missing / expired
+          content: { application/json: { schema: { $ref: '#/components/schemas/Error' } } }
+        '403':
+          description: Not owner
+          content: { application/json: { schema: { $ref: '#/components/schemas/Error' } } }
+        '404':
+          description: Post not found
+          content: { application/json: { schema: { $ref: '#/components/schemas/Error' } } }
