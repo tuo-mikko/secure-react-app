@@ -89,3 +89,6 @@ Basic Git flow for the project when developer starts a new feature:
 - When someone has accepted the pull request developer can merge it into development branch
 - When releases are made development branches are merged into main with pull requests
 
+
+## Use of generative AI in code
+ChatGPT was used to troubleshoot different bugs that arose during development, as well as give suggestions for the system layout.
