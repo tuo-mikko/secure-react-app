@@ -1,0 +1,40 @@
+### ── 1. Login – save cookies  (@name login)
+POST http://localhost:3001/api/login
+Content-Type: application/json
+
+{
+  "username": "Lotus",
+  "password": "salasana123"
+}
+
+### 2. Call a protected route immediately  (@name postList)POST http://localhost:3001/api/posts
+POST http://localhost:3001/api/posts
+Content-Type: application/json
+
+{
+  "title": "Token Test 1",
+  "message": "This should work."
+}
+
+### 3. (Wait 35 seconds so access token expires)
+
+### 4. Call the protected route again – should return 401  (@name postListExpired)
+POST http://localhost:3001/api/posts
+Content-Type: application/json
+
+{
+  "title": "Token Test 2",
+  "message": "This should not work since access token is expired."
+}
+
+### 5. Refresh the tokens (@name refresh)
+POST http://localhost:3001/api/refresh
+
+### 6. Retry the protected route – now 200 again  (@name postListAfterRefresh)
+POST http://localhost:3001/api/posts
+Content-Type: application/json
+
+{
+  "title": "Token Test 3",
+  "message": "This should work, since we have a fresh token."
+}
